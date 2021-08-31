@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AgentsController!{% endblock %}
+
+{% block body %}
+
+<h2 class="title">Liste des agents</h2>
+<div class="container">
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="text-center h5">Titre de la mission</th>
+            <th scope="col" class="text-center h5">nom de code</th>
+            <th scope="col" class="text-center h5">statut</th>
+            <th scope="col" class="text-center h5">description</th>
+            <th scope="col" class="text-center h5">pays</th>
+            <th scope="col" class="text-center h5">actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        {% for agent in agents %}
+            <td class="text-center">{{ agent.firstName }}</td>
+            <td class="text-center">{{ agent.lastName }}</td>
+            <td class="text-center">{{ agent.birthDate | date('d-m-Y')}}</td>
+            <td class="text-center">{{ agent.identificationId }}</td>
+            <td class="text-center">{{ agent.nationality }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+    {% for agent in agents %}
+
+
+    {% endfor %}
+
+{% endblock %}
