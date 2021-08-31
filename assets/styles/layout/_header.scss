@@ -1,0 +1,42 @@
+/* header style */
+
+header {
+  background-color: $color-secondary;
+  .menu {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+
+
+
+    li {
+      display: inline-block;
+      list-style: none;
+
+      a {
+        color: $color-primary;
+        text-transform: uppercase;
+        font-size: 20px;
+        padding: 0 10px;
+        text-decoration: none;
+
+        &:hover {
+          color: $color-tertiary;
+        }
+      }
+    }
+  }
+
+  form{
+    margin-left: 40vw;
+    display:inline-block;
+
+    label {
+      color: $color-primary;
+      text-transform: uppercase;
+      font-size: 20px;
+      padding: 0 10px;
+    }
+  }
+}
+
