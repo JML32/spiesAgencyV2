@@ -1,9 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Spies Agency{% endblock %}
+{% block title %}Liste des missions{% endblock %}
 
 {% block body %}
 
 
+    <h2 class="title">Liste des missions</h2>
+    <div class="container">
 
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="text-center h5">Titre de la mission</th>
+                <th scope="col" class="text-center h5">nom de code</th>
+                <th scope="col" class="text-center h5">statut</th>
+                <th scope="col" class="text-center h5">description</th>
+                <th scope="col" class="text-center h5">pays</th>
+                <th scope="col" class="text-center h5">actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for mission in missions %}
+                {% if mission.status =="echec" %}
+                    <tr style="background-color: darkred;">
+                {% elseif  mission.status == "termine" %}
+                    <tr style="background-color: palegreen">
+                {% elseif  mission.status == "encours" %}
+                    <tr style="background-color: yellow">
+                {% elseif  mission.status  == "debut" %}
+                    <tr style="background-color: darkgray">
+                {% endif %}
+
+                <td class="text-center">{{ mission.title }}</td>
+                <td class="text-center">{{ mission.codeName }}</td>
+                <td class="text-center">{{ mission.status }}</td>
+                <td class="text-center">{{ mission.description }}</td>
+                <td class="text-center">{{ mission.country }}</td>
+                <td class="text-center"><a href="{{ path('mission_details', {'id': mission.id}) }}" class="btn btn-primary text-white">Voir détails mission</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <div>
+            {{ knp_pagination_render(missions) }}
+        </div>
+    </div>
 {% endblock %}

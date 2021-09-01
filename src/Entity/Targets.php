@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\AgentsRepository;
+use App\Repository\TargetsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=AgentsRepository::class)
+ * @ORM\Entity(repositoryClass=TargetsRepository::class)
  */
-class Agents
+class Targets
 {
     /**
      * @ORM\Id
@@ -22,12 +22,12 @@ class Agents
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $firstName;
+    private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lastName;
+    private $firstName;
 
     /**
      * @ORM\Column(type="date")
@@ -35,9 +35,9 @@ class Agents
     private $birthDate;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $identificationId;
+    private $codeName;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,36 +45,18 @@ class Agents
     private $nationality;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Specialities::class, inversedBy="Agents")
-     */
-    private $Specialities;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Missions::class, inversedBy="Agents")
+     * @ORM\ManyToMany(targetEntity=Missions::class, mappedBy="Targets")
      */
     private $Missions;
 
     public function __construct()
     {
-        $this->Specialities = new ArrayCollection();
         $this->Missions = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): self
-    {
-        $this->firstName = $firstName;
-
-        return $this;
     }
 
     public function getLastName(): ?string
@@ -85,6 +67,18 @@ class Agents
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -101,14 +95,14 @@ class Agents
         return $this;
     }
 
-    public function getIdentificationId(): ?int
+    public function getCodeName(): ?string
     {
-        return $this->identificationId;
+        return $this->codeName;
     }
 
-    public function setIdentificationId(int $identificationId): self
+    public function setCodeName(string $codeName): self
     {
-        $this->identificationId = $identificationId;
+        $this->codeName = $codeName;
 
         return $this;
     }
@@ -126,30 +120,6 @@ class Agents
     }
 
     /**
-     * @return Collection|Specialities[]
-     */
-    public function getSpecialities(): Collection
-    {
-        return $this->Specialities;
-    }
-
-    public function addSpeciality(Specialities $speciality): self
-    {
-        if (!$this->Specialities->contains($speciality)) {
-            $this->Specialities[] = $speciality;
-        }
-
-        return $this;
-    }
-
-    public function removeSpeciality(Specialities $speciality): self
-    {
-        $this->Specialities->removeElement($speciality);
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Missions[]
      */
     public function getMissions(): Collection
@@ -161,6 +131,7 @@ class Agents
     {
         if (!$this->Missions->contains($mission)) {
             $this->Missions[] = $mission;
+            $mission->addTarget($this);
         }
 
         return $this;
@@ -168,7 +139,9 @@ class Agents
 
     public function removeMission(Missions $mission): self
     {
-        $this->Missions->removeElement($mission);
+        if ($this->Missions->removeElement($mission)) {
+            $mission->removeTarget($this);
+        }
 
         return $this;
     }
